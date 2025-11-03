@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Petitions</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .petition { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/create">Create Petition</a>
+    <a href="/search">Search</a>
+</div>
+
+<h1>All Petitions</h1>
+
+<div th:each="petition : ${petitions}" class="petition">
+    <h2><a th:href="@{/petition/{id}(id=${petition.id})}" th:text="${petition.title}"></a></h2>
+    <p th:text="${petition.description}"></p>
+    <p><strong>Signatures:</strong> <span th:text="${petition.signatureCount}"></span></p>
+</div>
+</body>
+</html>

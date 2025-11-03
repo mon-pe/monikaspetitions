@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Petition</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+        form { max-width: 500px; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/create">Create Petition</a>
+    <a href="/search">Search</a>
+</div>
+
+<h1>Create New Petition</h1>
+
+<form method="post" action="/create">
+    <label>Title:</label>
+    <input type="text" name="title" required />
+
+    <label>Description:</label>
+    <textarea name="description" rows="5" required></textarea>
+
+    <button type="submit">Create Petition</button>
+</form>
+</body>
+</html>

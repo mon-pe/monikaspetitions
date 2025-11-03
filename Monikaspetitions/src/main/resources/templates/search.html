@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Search Petitions</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 15px; }
+        input { padding: 8px; width: 300px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/create">Create Petition</a>
+    <a href="/search">Search</a>
+</div>
+
+<h1>Search Petitions</h1>
+
+<form method="get" action="/search/results">
+    <input type="text" name="query" placeholder="Enter search term..." required />
+    <button type="submit">Search</button>
+</form>
+</body>
+</html>
