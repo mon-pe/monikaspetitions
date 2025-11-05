@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Get Code') {
+            steps {
+                git 'https://github.com/mon-pe/yournamespetitions.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean'
+                sh 'mvn compile'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts allowEmptyArchive: true,
+                    artifacts: '**/*spetitions.war'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                input message: 'Do you want to deploy?', ok: 'Deploy'
+
+                sh 'docker build -f Dockerfile -t myapp .'
+                sh 'docker rm -f "myappcontainer" || true'
+                sh 'docker run --name "myappcontainer" -p 9090:8080 --detach myapp:latest'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
