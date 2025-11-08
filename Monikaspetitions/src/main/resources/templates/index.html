@@ -1,27 +1,178 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>All Petitions - update</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Petitions</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .petition { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
-        .nav { margin-bottom: 20px; }
-        .nav a { margin-right: 15px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #1a365d;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #1a365d;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        
+        .nav a {
+            padding: 10px 24px;
+            background: #1a365d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+            font-weight: 500;
+            font-family: Arial, sans-serif;
+        }
+        
+        .nav a:hover {
+            background: #2c5282;
+        }
+        
+        .petitions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .petition-card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+            border-top: 4px solid #1a365d;
+        }
+        
+        .petition-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .petition-card h2 {
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        
+        .petition-card h2 a {
+            color: #1a365d;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .petition-card h2 a:hover {
+            color: #2c5282;
+        }
+        
+        .petition-card p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .signature-count {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #e6f2ff;
+            color: #1a365d;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9em;
+            font-family: Arial, sans-serif;
+        }
+        
+        .empty-state {
+            background: white;
+            padding: 60px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .empty-state h2 {
+            color: #1a365d;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #666;
+            font-family: Arial, sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .petitions-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .header {
+                padding: 25px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="nav">
-    <a href="/">Home</a>
-    <a href="/create">Create Petition</a>
-    <a href="/search">Search</a>
-</div>
+<div class="container">
+    <div class="header">
+        <h1>Petitions Platform</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/create">Create Petition</a>
+            <a href="/search">Search</a>
+        </div>
+    </div>
 
-<h1>All Petitions</h1>
+    <div th:if="${#lists.isEmpty(petitions)}" class="empty-state">
+        <h2>No petitions yet</h2>
+        <p>Be the first to create one.</p>
+    </div>
 
-<div th:each="petition : ${petitions}" class="petition">
-    <h2><a th:href="@{/petition/{id}(id=${petition.id})}" th:text="${petition.title}"></a></h2>
-    <p th:text="${petition.description}"></p>
-    <p><strong>Signatures:</strong> <span th:text="${petition.signatureCount}"></span></p>
+    <div class="petitions-container">
+        <div th:each="petition : ${petitions}" class="petition-card">
+            <h2><a th:href="@{/petition/{id}(id=${petition.id})}" th:text="${petition.title}">Petition Title</a></h2>
+            <p th:text="${petition.description}">Description</p>
+            <div class="signature-count">
+                <span th:text="${petition.signatureCount} + ' signatures'">0 signatures</span>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

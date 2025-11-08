@@ -1,33 +1,291 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Search Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${petition.title}">Petition Details</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .petition { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
-        .nav { margin-bottom: 20px; }
-        .nav a { margin-right: 15px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #1a365d;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #1a365d;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        
+        .nav a {
+            padding: 10px 24px;
+            background: #1a365d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+            font-weight: 500;
+            font-family: Arial, sans-serif;
+        }
+        
+        .nav a:hover {
+            background: #2c5282;
+        }
+        
+        .petition-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .petition-title {
+            color: #1a365d;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            font-weight: 600;
+        }
+        
+        .petition-description {
+            color: #444;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .signature-badge {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #e6f2ff;
+            color: #1a365d;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .sign-section {
+            background: #f8f9fa;
+            padding: 35px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .sign-section h3 {
+            color: #1a365d;
+            margin-bottom: 10px;
+            font-size: 1.6em;
+            font-weight: 600;
+        }
+        
+        .sign-section p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+        }
+        
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #1a365d;
+        }
+        
+        .btn-sign {
+            width: 100%;
+            padding: 14px;
+            background: #1a365d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .btn-sign:hover {
+            background: #2c5282;
+        }
+        
+        .signatures-list {
+            background: white;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .signatures-list h3 {
+            color: #1a365d;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            font-weight: 600;
+        }
+        
+        .signature-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 4px solid #1a365d;
+        }
+        
+        .signature-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+        }
+        
+        .signature-email {
+            color: #666;
+            font-size: 0.9em;
+            font-family: Arial, sans-serif;
+        }
+        
+        .no-signatures {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .petition-container {
+                padding: 30px 25px;
+            }
+            
+            .petition-title {
+                font-size: 1.8em;
+            }
+            
+            .sign-section {
+                padding: 25px;
+            }
+            
+            .header {
+                padding: 25px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="nav">
-    <a href="/">Home</a>
-    <a href="/create">Create Petition</a>
-    <a href="/search">Search</a>
+<div class="container">
+    <div class="header">
+        <h1>Petitions Platform</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/create">Create Petition</a>
+            <a href="/search">Search</a>
+        </div>
+    </div>
+
+    <div class="petition-container">
+        <h2 class="petition-title" th:text="${petition.title}">Petition Title</h2>
+        <p class="petition-description" th:text="${petition.description}">Description</p>
+        
+        <div class="signature-badge">
+            <span th:text="${petition.signatureCount} + ' signatures'">0 signatures</span>
+        </div>
+        
+        <div class="sign-section">
+            <h3>Sign This Petition</h3>
+            <p>Add your voice to this cause.</p>
+            
+            <form method="post" th:action="@{/petition/{id}/sign(id=${petition.id})}">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required />
+                </div>
+
+                <button type="submit" class="btn-sign">Sign Petition</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="signatures-list" th:if="${not #lists.isEmpty(petition.signatures)}">
+        <h3>Recent Signatures</h3>
+        <div th:each="signature : ${petition.signatures}" class="signature-item">
+            <div class="signature-name" th:text="${signature.name}">Name</div>
+            <div class="signature-email" th:text="${signature.email}">email@example.com</div>
+        </div>
+    </div>
+
+    <div class="signatures-list" th:if="${#lists.isEmpty(petition.signatures)}">
+        <div class="no-signatures">
+            <h3>Be the first to sign</h3>
+            <p>No signatures yet. Start the momentum!</p>
+        </div>
+    </div>
 </div>
-
-<h1>Search Results for "<span th:text="${query}"></span>"</h1>
-
-<div th:if="${#lists.isEmpty(results)}">
-    <p>No petitions found matching your search.</p>
-</div>
-
-<div th:each="petition : ${results}" class="petition">
-    <h2><a th:href="@{/petition/{id}(id=${petition.id})}" th:text="${petition.title}"></a></h2>
-    <p th:text="${petition.description}"></p>
-    <p><strong>Signatures:</strong> <span th:text="${petition.signatureCount}"></span></p>
-</div>
-
-<a href="/search">New Search</a>
 </body>
 </html>

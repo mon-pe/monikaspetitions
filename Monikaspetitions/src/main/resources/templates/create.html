@@ -1,33 +1,184 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Petition</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .nav { margin-bottom: 20px; }
-        .nav a { margin-right: 15px; }
-        form { max-width: 500px; }
-        input, textarea { width: 100%; padding: 8px; margin: 5px 0; }
-        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: #1a365d;
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #1a365d;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+        }
+        
+        .nav a {
+            padding: 10px 24px;
+            background: #1a365d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+            font-weight: 500;
+            font-family: Arial, sans-serif;
+        }
+        
+        .nav a:hover {
+            background: #2c5282;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-container h2 {
+            color: #1a365d;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        
+        .form-container p {
+            color: #666;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+        }
+        
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d0d0d0;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1a365d;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: #1a365d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-family: Arial, sans-serif;
+        }
+        
+        .btn-submit:hover {
+            background: #2c5282;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-container {
+                padding: 30px 25px;
+            }
+            
+            .header {
+                padding: 25px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="nav">
-    <a href="/">Home</a>
-    <a href="/create">Create Petition</a>
-    <a href="/search">Search</a>
+<div class="container">
+    <div class="header">
+        <h1>Petitions Platform</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/create">Create Petition</a>
+            <a href="/search">Search</a>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h2>Create New Petition</h2>
+        <p>Start making a difference today.</p>
+        
+        <form method="post" action="/create">
+            <div class="form-group">
+                <label for="title">Petition Title</label>
+                <input type="text" id="title" name="title" placeholder="What change do you want to see?" required />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Explain why this petition matters..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">Create Petition</button>
+        </form>
+    </div>
 </div>
-
-<h1>Create New Petition</h1>
-
-<form method="post" action="/create">
-    <label>Title:</label>
-    <input type="text" name="title" required />
-
-    <label>Description:</label>
-    <textarea name="description" rows="5" required></textarea>
-
-    <button type="submit">Create Petition</button>
-</form>
 </body>
 </html>
