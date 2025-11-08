@@ -1,4 +1,4 @@
-package com.example.yournamespetitions;
+package com.example.Monikaspetitions;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +15,18 @@ public class PetitionManager {
 
     // Constructor - adds some sample data when app starts
     public PetitionManager() {
-        petitions.add(new Petition("Save the Park", "We need to protect our local park from development"));
-        petitions.add(new Petition("Better School Lunches", "Improve the quality of meals in schools"));
-        petitions.add(new Petition("Fix the Roads", "Repair potholes in our neighborhood"));
+        petitions.add(new Petition("Save Moore Street From Demolition",  "Moore Street is a site of immense historical significance to Ireland's struggle for independence. We call on the government to protect this heritage site from commercial development and preserve it for future generations as a national monument."));
+        petitions.add(new Petition("Better Flood Defences ", "Recent flooding has caused severe damage to homes and businesses in our community. We demand immediate action to improve drainage systems, install flood barriers, and protect residents from future flooding disasters."));
+        petitions.add(new Petition("Fix the Road in Cloyne", "The main road through Cloyne has deteriorated to dangerous levels with potholes and cracked surfaces. We urge the local council to prioritize urgent repairs to ensure the safety of motorists, cyclists, and pedestrians."));
+
     }
 
     // Home page - shows all petitions
     @GetMapping("/")
     public String home(Model model) {
+        // Pass all petitions to the view for display
         model.addAttribute("petitions", petitions);
-        return "index";
+        return "index"; // Returns the index.html template
     }
 
     // Page to create new petition
