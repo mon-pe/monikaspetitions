@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    
+
     tools {
-        maven 'Maven' // Name of Maven installation in Jenkins
-        jdk 'Java17' // Name of JDK installation in Jenkins
+        maven 'Maven'
+        jdk 'Java17'
     }
-    
+
     stages {
         stage('Get Code from GitHub') {
             steps {
@@ -14,58 +14,53 @@ pipeline {
                     url: 'https://github.com/mon-pe/monikaspetitions.git'
             }
         }
-        
+
         stage('Build') {
             steps {
                 echo 'Building the project...'
                 sh 'mvn clean compile'
             }
         }
-        
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
                 sh 'mvn test'
             }
         }
-        
+
         stage('Package') {
             steps {
                 echo 'Packaging as WAR file...'
                 sh 'mvn package'
-                
+
                 // Archive the WAR file
-                archiveArtifacts artifacts: '**/target/*.war', 
+                archiveArtifacts artifacts: '**/target/*.war',
                                  fingerprint: true
             }
         }
-        
+
         stage('Deploy Approval') {
             steps {
                 echo 'Waiting for deployment approval...'
                 input message: 'Do you want to deploy to Tomcat?',
-                      ok: 'Deploy',
-                      submitter: 'admin'
+                      ok: 'Deploy'
             }
         }
-        
+
         stage('Deploy to Tomcat') {
             steps {
-                echo 'Deploying to Tomcat on EC2...'
-                
-                // Deploy WAR file to Tomcat
-                sh '''
-                    scp -i /var/lib/jenkins/.ssh/ec2-key.pem \
-                        target/Monikaspetitions.war \
-                        ec2-user@YOUR_TOMCAT_EC2_IP:/opt/tomcat/webapps/
-                '''
-                
+                echo 'Deploying to Tomcat...'
+
+                // Copy WAR file to Tomcat webapps directory
+                sh 'sudo cp target/Monikaspetitions.war /opt/tomcat/webapps/'
+
                 echo 'Deployment complete!'
-                echo 'Application available at: http://YOUR_TOMCAT_EC2_IP:9090/Monikaspetitions'
+                echo 'Application available at: http://18.197.147.41:9090/Monikaspetitions'
             }
         }
     }
-    
+
     post {
         success {
             echo 'Pipeline executed successfully!'
