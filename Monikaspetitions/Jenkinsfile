@@ -1,56 +1,77 @@
 pipeline {
     agent any
-
+    
+    tools {
+        maven 'Maven' // Name of Maven installation in Jenkins
+        jdk 'Java17' // Name of JDK installation in Jenkins
+    }
+    
     stages {
-        stage('Get Code') {
+        stage('Get Code from GitHub') {
             steps {
-                git 'https://github.com/mon-pe/yournamespetitions.git'
+                echo 'Cloning repository from GitHub...'
+                git branch: 'main',
+                    url: 'https://github.com/mon-pe/monikaspetitions.git'
             }
         }
-
+        
         stage('Build') {
             steps {
-                sh 'mvn clean'
-                sh 'mvn compile'
+                echo 'Building the project...'
+                sh 'mvn clean compile'
             }
         }
-
+        
         stage('Test') {
             steps {
+                echo 'Running tests...'
                 sh 'mvn test'
             }
         }
-
+        
         stage('Package') {
             steps {
+                echo 'Packaging as WAR file...'
                 sh 'mvn package'
+                
+                // Archive the WAR file
+                archiveArtifacts artifacts: '**/target/*.war', 
+                                 fingerprint: true
             }
         }
-
-        stage('Archive') {
+        
+        stage('Deploy Approval') {
             steps {
-                archiveArtifacts allowEmptyArchive: true,
-                    artifacts: '**/*spetitions.war'
+                echo 'Waiting for deployment approval...'
+                input message: 'Do you want to deploy to Tomcat?',
+                      ok: 'Deploy',
+                      submitter: 'admin'
             }
         }
-
-        stage('Deploy') {
+        
+        stage('Deploy to Tomcat') {
             steps {
-                input message: 'Do you want to deploy?', ok: 'Deploy'
-
-                sh 'docker build -f Dockerfile -t myapp .'
-                sh 'docker rm -f "myappcontainer" || true'
-                sh 'docker run --name "myappcontainer" -p 9090:8080 --detach myapp:latest'
+                echo 'Deploying to Tomcat on EC2...'
+                
+                // Deploy WAR file to Tomcat
+                sh '''
+                    scp -i /var/lib/jenkins/.ssh/ec2-key.pem \
+                        target/Monikaspetitions.war \
+                        ec2-user@YOUR_TOMCAT_EC2_IP:/opt/tomcat/webapps/
+                '''
+                
+                echo 'Deployment complete!'
+                echo 'Application available at: http://YOUR_TOMCAT_EC2_IP:9090/Monikaspetitions'
             }
         }
     }
-
+    
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline executed successfully!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Pipeline failed. Check the logs.'
         }
     }
 }
