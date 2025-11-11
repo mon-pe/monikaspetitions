@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
+    }
+
     tools {
         maven 'Maven'
         jdk 'Java17'
@@ -34,7 +39,6 @@ pipeline {
                 echo 'Packaging as WAR file...'
                 sh 'mvn package'
 
-                // Archive the WAR file
                 archiveArtifacts artifacts: '**/target/*.war',
                                  fingerprint: true
             }
@@ -52,7 +56,6 @@ pipeline {
             steps {
                 echo 'Deploying to Tomcat...'
 
-                // Copy WAR file to Tomcat webapps directory
                 sh 'sudo cp target/Monikaspetitions.war /opt/tomcat/webapps/'
 
                 echo 'Deployment complete!'
