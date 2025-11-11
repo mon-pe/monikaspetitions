@@ -1,14 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
-    }
-
     tools {
         maven 'Maven'
-        jdk 'Java17'
     }
 
     stages {
@@ -24,7 +18,11 @@ pipeline {
             steps {
                 dir('Monikaspetitions') {
                     echo 'Building the project...'
-                    sh 'mvn clean compile'
+                    sh '''
+                        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                        export PATH=$JAVA_HOME/bin:$PATH
+                        mvn clean compile
+                    '''
                 }
             }
         }
@@ -33,7 +31,11 @@ pipeline {
             steps {
                 dir('Monikaspetitions') {
                     echo 'Running tests...'
-                    sh 'mvn test'
+                    sh '''
+                        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                        export PATH=$JAVA_HOME/bin:$PATH
+                        mvn test
+                    '''
                 }
             }
         }
@@ -42,7 +44,11 @@ pipeline {
             steps {
                 dir('Monikaspetitions') {
                     echo 'Packaging as WAR file...'
-                    sh 'mvn package'
+                    sh '''
+                        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                        export PATH=$JAVA_HOME/bin:$PATH
+                        mvn package
+                    '''
 
                     archiveArtifacts artifacts: '**/target/*.war',
                                      fingerprint: true
