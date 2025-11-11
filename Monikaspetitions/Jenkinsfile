@@ -19,7 +19,7 @@ pipeline {
                 dir('Monikaspetitions') {
                     echo 'Building the project...'
                     sh '''
-                        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                        export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
                         export PATH=$JAVA_HOME/bin:$PATH
                         mvn clean compile
                     '''
@@ -32,7 +32,7 @@ pipeline {
                 dir('Monikaspetitions') {
                     echo 'Running tests...'
                     sh '''
-                        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                        export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
                         export PATH=$JAVA_HOME/bin:$PATH
                         mvn test
                     '''
@@ -45,7 +45,7 @@ pipeline {
                 dir('Monikaspetitions') {
                     echo 'Packaging as WAR file...'
                     sh '''
-                        export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+                        export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
                         export PATH=$JAVA_HOME/bin:$PATH
                         mvn package
                     '''
