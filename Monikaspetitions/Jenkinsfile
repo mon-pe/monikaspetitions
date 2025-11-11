@@ -22,25 +22,31 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building the project...'
-                sh 'mvn clean compile'
+                dir('Monikaspetitions') {
+                    echo 'Building the project...'
+                    sh 'mvn clean compile'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                sh 'mvn test'
+                dir('Monikaspetitions') {
+                    echo 'Running tests...'
+                    sh 'mvn test'
+                }
             }
         }
 
         stage('Package') {
             steps {
-                echo 'Packaging as WAR file...'
-                sh 'mvn package'
+                dir('Monikaspetitions') {
+                    echo 'Packaging as WAR file...'
+                    sh 'mvn package'
 
-                archiveArtifacts artifacts: '**/target/*.war',
-                                 fingerprint: true
+                    archiveArtifacts artifacts: '**/target/*.war',
+                                     fingerprint: true
+                }
             }
         }
 
@@ -54,12 +60,14 @@ pipeline {
 
         stage('Deploy to Tomcat') {
             steps {
-                echo 'Deploying to Tomcat...'
+                dir('Monikaspetitions') {
+                    echo 'Deploying to Tomcat...'
 
-                sh 'sudo cp target/Monikaspetitions.war /opt/tomcat/webapps/'
+                    sh 'sudo cp target/Monikaspetitions.war /opt/tomcat/webapps/'
 
-                echo 'Deployment complete!'
-                echo 'Application available at: http://18.197.147.41:9090/Monikaspetitions'
+                    echo 'Deployment complete!'
+                    echo 'Application available at: http://18.197.147.41:9090/Monikaspetitions'
+                }
             }
         }
     }
