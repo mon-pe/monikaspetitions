@@ -1,4 +1,4 @@
-package com.example.yournamespetitions;
+package com.example.Monikaspetitions;
 
 public class Signature {
     private String name;

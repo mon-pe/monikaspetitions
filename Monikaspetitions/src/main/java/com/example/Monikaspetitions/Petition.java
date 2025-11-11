@@ -1,4 +1,4 @@
-package com.example.yournamespetitions;
+package com.example.Monikaspetitions;
 
 import java.util.ArrayList;
 import java.util.List;
