@@ -248,9 +248,9 @@
     <div class="header">
         <h1>Petitions Platform</h1>
         <div class="nav">
-            <a href="/">Home</a>
-            <a href="/create">Create Petition</a>
-            <a href="/search">Search</a>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/create}">Create Petition</a>
+            <a th:href="@{/search}">Search</a>
         </div>
     </div>
 
@@ -265,7 +265,7 @@
         <div class="sign-section">
             <h3>Sign This Petition</h3>
             <p>Add your voice to this cause.</p>
-            
+
             <form method="post" th:action="@{/petition/{id}/sign(id=${petition.id})}">
                 <div class="form-group">
                     <label for="name">Your Name</label>

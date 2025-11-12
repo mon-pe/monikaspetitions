@@ -155,17 +155,17 @@
     <div class="header">
         <h1>Petitions Platform</h1>
         <div class="nav">
-            <a href="/">Home</a>
-            <a href="/create">Create Petition</a>
-            <a href="/search">Search</a>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/create}">Create Petition</a>
+            <a th:href="@{/search}">Search</a>
         </div>
     </div>
 
     <div class="form-container">
         <h2>Create New Petition</h2>
         <p>Start making a difference today.</p>
-        
-        <form method="post" action="/create">
+
+        <form method="post" th:action="@{/create}">
             <div class="form-group">
                 <label for="title">Petition Title</label>
                 <input type="text" id="title" name="title" placeholder="What change do you want to see?" required minlength="10" maxlength="100" />

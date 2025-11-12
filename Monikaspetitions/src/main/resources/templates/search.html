@@ -156,17 +156,17 @@
     <div class="header">
         <h1>Petitions Platform</h1>
         <div class="nav">
-            <a href="/">Home</a>
-            <a href="/create">Create Petition</a>
-            <a href="/search">Search</a>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/create}">Create Petition</a>
+            <a th:href="@{/search}">Search</a>
         </div>
     </div>
 
     <div class="search-container">
         <h2>Search Petitions</h2>
         <p>Find petitions that matter to you</p>
-        
-        <form method="get" action="/search/results" class="search-form">
+
+        <form method="get" th:action="@{/search/results}" class="search-form">
             <input type="text" 
                    name="query" 
                    class="search-input"
